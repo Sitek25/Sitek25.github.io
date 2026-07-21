@@ -32,6 +32,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-white/20 font-sans overflow-x-hidden">
+      <div className={`fixed top-0 left-0 right-0 z-50 text-white text-center py-2 text-xs md:text-sm font-bold tracking-widest uppercase shadow-md transition-colors duration-500 ${isClient ? "bg-purple-600" : "bg-orange-600"}`}>
+  Strona niedługo będzie przebudowana
+</div>
       
       {/*FLOATING TOGGLE*/}
       <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
