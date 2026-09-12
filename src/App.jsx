@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowUpRight, GraduationCap, Calendar, Zap, 
-  Monitor, PenTool, Globe, Layout, ShoppingCart, FileSpreadsheet, Code2 
+  Monitor, PenTool, Globe, Layout, ShoppingCart, FileSpreadsheet, Code2, Wrench, X
 } from "lucide-react";
 import { 
   SiHtml5, SiCss3, SiJavascript, SiPhp, 
@@ -11,6 +11,7 @@ import {
 
 export default function App() {
   const [mode, setMode] = useState("client"); 
+  const [showAlert, setShowAlert] = useState(true);
   const isClient = mode === "client";
   const themeColor = isClient ? "#8b5cf6" : "#f97316"; 
   const accentClass = isClient ? "text-purple-500" : "text-orange-500";
@@ -31,12 +32,60 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-white/20 font-sans overflow-x-hidden">
-      <div className={`fixed top-0 left-0 right-0 z-50 text-white text-center py-2 text-xs md:text-sm font-bold tracking-widest uppercase shadow-md transition-colors duration-500 ${isClient ? "bg-purple-600" : "bg-orange-600"}`}>
-  Strona niedługo będzie przebudowana
-</div>
+    <div className="min-h-screen bg-[#050505] text-white selection:bg-white/20 font-sans overflow-x-hidden relative">
       
-      {/*FLOATING TOGGLE*/}
+      {/* ALERT / MODAL NA ŚRODKU (WARSTWA Z-INDEX 100) */}
+      <AnimatePresence>
+        {showAlert && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="relative max-w-md w-full bg-zinc-900/95 border border-white/10 p-8 rounded-3xl shadow-2xl text-center overflow-hidden"
+            >
+              {/* Tło z delikatnym akcentem kolorystycznym */}
+              <div className={`absolute -top-24 -left-24 w-48 h-48 rounded-full blur-3xl opacity-20 ${isClient ? 'bg-purple-500' : 'bg-orange-500'}`} />
+
+              <button 
+                onClick={() => setShowAlert(false)}
+                className="absolute top-4 right-4 text-zinc-500 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors"
+                aria-label="Zamknij"
+              >
+                <X size={20} />
+              </button>
+
+              <div className={`w-14 h-14 rounded-2xl mx-auto mb-6 flex items-center justify-center bg-zinc-800/80 border border-white/10 ${accentClass}`}>
+                <Wrench size={28} />
+              </div>
+
+              <h3 className="text-2xl font-black tracking-tight mb-3">
+                Trwają prace nad nową stroną
+              </h3>
+
+              <p className="text-zinc-400 text-sm leading-relaxed mb-8 font-light">
+                Portfolio jest obecnie w trakcie przebudowy. Niektóre sekcje i projekty są aktualizowane na bieżąco.
+              </p>
+
+              <button
+                onClick={() => setShowAlert(false)}
+                style={{ backgroundColor: themeColor }}
+                className="w-full py-3.5 rounded-xl text-white font-bold tracking-wider uppercase text-xs hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg"
+              >
+                Rozumiem, Przeglądaj
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* FLOATING TOGGLE */}
       <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
         <div className="bg-zinc-900/90 backdrop-blur-xl p-1.5 rounded-full border border-white/10 flex items-center shadow-2xl">
           <button 
@@ -54,7 +103,7 @@ export default function App() {
         </div>
       </div>
 
-      {/*HERO */}
+      {/* HERO */}
       <section className="min-h-screen flex items-center px-6 md:px-24">
         <div className={`w-full flex ${isClient ? "justify-start text-left" : "justify-end text-right"}`}>
           <motion.div 
@@ -87,7 +136,7 @@ export default function App() {
         </div>
       </section>
 
-      {/*TOOLBOX*/}
+      {/* TOOLBOX */}
       <div className="py-12 border-y border-white/5 bg-zinc-900/10 overflow-hidden relative">
         <motion.div 
           animate={{ x: [0, -1500] }} 
@@ -103,7 +152,7 @@ export default function App() {
         </motion.div>
       </div>
 
-      {/*SEKCJA ŚRODKOWA*/}
+      {/* SEKCJA ŚRODKOWA */}
       <section className="py-32 px-6 md:px-24">
         <AnimatePresence mode="wait">
           {isClient ? (
@@ -161,7 +210,7 @@ export default function App() {
         </AnimatePresence>
       </section>
 
-      {/*PROJEKTY*/}
+      {/* PROJEKTY */}
       <section className="py-24 px-6 md:px-24 bg-zinc-900/20 rounded-[4rem] mx-4 mb-20">
          <h3 className={`text-2xl font-black uppercase italic mb-16 tracking-widest ${accentClass}`}>Aktualne Projekty</h3>
          <div className="grid md:grid-cols-2 gap-12">
@@ -182,7 +231,7 @@ export default function App() {
          </div>
       </section>
 
-      {/*KONTAKT*/}
+      {/* KONTAKT */}
       <section id="contact" className="py-48 px-6 md:px-24 text-center">
         <h2 className="text-4xl md:text-6xl font-bold mb-16 tracking-tighter leading-tight">
           {isClient ? "Potrzebujesz solidnego wsparcia?" : "Jeśli zachęciłem Cię to napisz,"} <br />
